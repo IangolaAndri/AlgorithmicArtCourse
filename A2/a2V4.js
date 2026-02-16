@@ -89,7 +89,17 @@ function draw() {
   // move agents and compute flow
   for (let p of agents) {
     p.t += p.speed;
-    if (p.t > 1) p.t = 0;
+    if (p.t > 1) {
+      // current node is the end of the edge
+      let currentNodeIndex = p.edge.b;
+      // find all edges connected to this node
+      let possibleEdges = edges.filter(e => e.a === currentNodeIndex || e.b === currentNodeIndex);
+      // pick a random new edge
+      let newEdge = random(possibleEdges);
+      p.edge = newEdge;
+      // reset t to start of new edge
+      p.t = 0;
+    }
 
     let a = nodes[p.edge.a];
     let b = nodes[p.edge.b];
